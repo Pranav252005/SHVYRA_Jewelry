@@ -231,7 +231,8 @@ const ProductCard = ({ product }) => {
           onClose={() => setShowLoginModal(false)}
         />
       </div>
-      )
+    </div>
+  )
 }
 
-      export default ProductCard
+export default ProductCard
