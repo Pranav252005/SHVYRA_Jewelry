@@ -162,8 +162,10 @@ const Checkout = () => {
 
   const handleContinueShopping = () => {
     setOrderSuccess(null)
-    // Navigate to shop page
-    window.location.href = '/shop'
+    // Navigate to shop page using anchor tag click
+    const shopLink = document.createElement('a')
+    shopLink.href = '/shop'
+    shopLink.click()
   }
 
   // Show success page if order was completed
