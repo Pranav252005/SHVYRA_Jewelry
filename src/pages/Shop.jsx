@@ -82,7 +82,7 @@ const Shop = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-[#E6B445] via-[#D4A574] to-[#C49A63] mt-36 py-16 lg:py-20">
+      <section className="relative bg-gradient-to-br from-[#E6B445] via-[#D4A574] to-[#C49A63] pt-48 pb-16 lg:pb-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-4xl text-center sm:text-5xl lg:text-6xl font-bold text-white mb-4 font-serif">
             Shop All Products

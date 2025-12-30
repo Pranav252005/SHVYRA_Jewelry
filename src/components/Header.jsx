@@ -27,6 +27,7 @@ const Header = () => {
   const shopTimeoutRef = useRef(null)
   const arrivalsTimeoutRef = useRef(null)
   const userTimeoutRef = useRef(null)
+  const mobileMenuRef = useRef(null)
 
   useEffect(() => {
     return () => {
@@ -35,6 +36,27 @@ const Header = () => {
       if (userTimeoutRef.current) clearTimeout(userTimeoutRef.current)
     }
   }, [])
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (mobileMenuOpen && mobileMenuRef.current && !mobileMenuRef.current.contains(event.target)) {
+        const hamburgerButton = event.target.closest('[aria-label="Toggle menu"]')
+        if (!hamburgerButton) {
+          setMobileMenuOpen(false)
+        }
+      }
+    }
+
+    if (mobileMenuOpen) {
+      document.addEventListener('mousedown', handleClickOutside)
+      document.addEventListener('touchstart', handleClickOutside)
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+      document.removeEventListener('touchstart', handleClickOutside)
+    }
+  }, [mobileMenuOpen])
 
   // Reset image error when user changes
   useEffect(() => {
@@ -104,7 +126,7 @@ const Header = () => {
       {/* Glass Navbar */}
       <div className="bg-white/80 backdrop-blur-lg shadow-md border-b border-white/20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
+          <div className="relative flex items-center justify-between h-16">
             {/* Mobile Menu Button */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -115,8 +137,8 @@ const Header = () => {
             </button>
 
             {/* Logo - Center on mobile, left on desktop */}
-            <div className="flex-0 flex lg:justify-start">
-              <a href="/" className="cursor-pointer">
+            <div className="absolute left-1/2 -translate-x-1/2 lg:static lg:left-auto lg:translate-x-0 flex justify-center lg:justify-start">
+              <a href="/" className="cursor-pointer flex items-center justify-center">
                 <img
                   src="/Compoents/Logo/Shvyra.png"
                   alt="SHVYRA Logo"
@@ -188,18 +210,20 @@ const Header = () => {
                   <FiUser size={20} />
                 </button>
               )}
-              <button
-                onClick={() => setWishlistModalOpen(true)}
-                className="hidden sm:block p-2 hover:bg-gray-100 rounded-full transition-all relative"
-                aria-label="Wishlist"
-              >
-                <FiHeart size={20} />
-                {wishlistItems.length > 0 && (
-                  <span className="absolute top-0 right-0 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
-                    {wishlistItems.length}
-                  </span>
-                )}
-              </button>
+              {isAuthenticated && (
+                <button
+                  onClick={() => setWishlistModalOpen(true)}
+                  className="p-2 hover:bg-gray-100 rounded-full transition-all relative"
+                  aria-label="Wishlist"
+                >
+                  <FiHeart size={20} />
+                  {wishlistItems.length > 0 && (
+                    <span className="absolute top-0 right-0 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                      {wishlistItems.length}
+                    </span>
+                  )}
+                </button>
+              )}
               <button
                 onClick={() => setCartModalOpen(true)}
                 className="p-2 hover:bg-gray-100 rounded-full transition-all relative"
@@ -286,34 +310,34 @@ const Header = () => {
 
       {/* Mobile Menu */}
       {mobileMenuOpen && (
-        <div className="lg:hidden bg-white border-b border-gray-200 shadow-lg">
+        <div ref={mobileMenuRef} className="lg:hidden bg-white border-b border-gray-200 shadow-lg">
           <nav className="flex flex-col px-4 py-4 gap-4">
-            <a href="/" className="text-sm font-medium hover:text-gold transition-colors uppercase tracking-wide py-2">
+            <a href="/" onClick={() => setMobileMenuOpen(false)} className="text-sm font-medium hover:text-gold transition-colors uppercase tracking-wide py-2">
               Home
             </a>
             <div className="flex flex-col">
-              <a href="/shop" className="text-sm font-medium hover:text-gold transition-colors uppercase tracking-wide py-2">
+              <a href="/shop" onClick={() => setMobileMenuOpen(false)} className="text-sm font-medium hover:text-gold transition-colors uppercase tracking-wide py-2">
                 Shop by Product
               </a>
               <div className="pl-4 flex flex-col gap-2 mt-2">
-                <a href="/shop?category=earrings" className="text-xs text-gray-600 hover:text-gold transition-colors py-1">
+                <a href="/shop?category=earrings" onClick={() => setMobileMenuOpen(false)} className="text-xs text-gray-600 hover:text-gold transition-colors py-1">
                   → Earrings
                 </a>
-                <a href="/shop?category=necklaces" className="text-xs text-gray-600 hover:text-gold transition-colors py-1">
+                <a href="/shop?category=necklaces" onClick={() => setMobileMenuOpen(false)} className="text-xs text-gray-600 hover:text-gold transition-colors py-1">
                   → Necklaces
                 </a>
-                <a href="/shop?category=bangles" className="text-xs text-gray-600 hover:text-gold transition-colors py-1">
+                <a href="/shop?category=bangles" onClick={() => setMobileMenuOpen(false)} className="text-xs text-gray-600 hover:text-gold transition-colors py-1">
                   → Bangles
                 </a>
               </div>
             </div>
-            <a href="/new-arrivals" className="text-sm font-medium hover:text-gold transition-colors uppercase tracking-wide py-2">
+            <a href="/new-arrivals" onClick={() => setMobileMenuOpen(false)} className="text-sm font-medium hover:text-gold transition-colors uppercase tracking-wide py-2">
               New Arrivals
             </a>
-            <a href="#sale" className="text-sm font-medium hover:text-gold transition-colors uppercase tracking-wide text-red-600 py-2">
+            <a href="#sale" onClick={() => setMobileMenuOpen(false)} className="text-sm font-medium hover:text-gold transition-colors uppercase tracking-wide text-red-600 py-2">
               Sale
             </a>
-            <a href="/about" className="text-sm font-medium hover:text-gold transition-colors uppercase tracking-wide py-2">
+            <a href="/about" onClick={() => setMobileMenuOpen(false)} className="text-sm font-medium hover:text-gold transition-colors uppercase tracking-wide py-2">
               About Us
             </a>
           </nav>

@@ -45,7 +45,11 @@ const Checkout = () => {
   const suggestedProducts = getSuggestedProducts()
   const subtotal = getCartTotal()
   const discount = promoApplied ? subtotal * 0.1 : 0
-  const shipping = subtotal > 2000 ? 0 : 100
+
+  // Delivery rule: Free delivery for first 2 orders, then free delivery only above ₹999
+  const orderCount = parseInt(localStorage.getItem('shvyra-order-count') || '0')
+  const shipping = orderCount < 2 ? 0 : (subtotal >= 999 ? 0 : 100)
+
   const total = subtotal - discount + shipping
 
   const handleApplyPromo = () => {
@@ -140,6 +144,9 @@ const Checkout = () => {
             address: fullAddress
           }
         })
+        // Increment order count for delivery rule
+        const currentCount = parseInt(localStorage.getItem('shvyra-order-count') || '0')
+        localStorage.setItem('shvyra-order-count', (currentCount + 1).toString())
         // Clear cart after successful payment
         clearCart()
       },

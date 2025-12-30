@@ -16,7 +16,7 @@ const Home = () => {
       <div id="earrings">
         <ProductSection
           title="Earrings"
-          modelImage="/Compoents/PagesImages/ForEarrings.png"
+          modelImages={["/Compoents/PagesImages/ForEarrings1.png", "/Compoents/PagesImages/ForEarrings2.png"]}
           modelPosition="left"
           products={productsData.earrings}
         />
@@ -26,7 +26,7 @@ const Home = () => {
       <div id="necklaces">
         <ProductSection
           title="Necklaces"
-          modelImage="/Compoents/PagesImages/ForNecklace.png"
+          modelImages={["/Compoents/PagesImages/ForNecklace1.png"]}
           modelPosition="right"
           products={productsData.necklaces}
         />
@@ -36,7 +36,7 @@ const Home = () => {
       <div id="bangles">
         <ProductSection
           title="Bangles"
-          modelImage="/Compoents/PagesImages/ForBangles.png"
+          modelImages={["/Compoents/PagesImages/ForBangles1.png"]}
           modelPosition="left"
           products={productsData.bangles}
         />

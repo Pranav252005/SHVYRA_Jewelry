@@ -3,7 +3,9 @@ import { createPortal } from 'react-dom'
 import { FiX, FiHeart, FiShoppingBag, FiChevronLeft, FiChevronRight, FiMaximize2, FiZoomIn, FiZoomOut, FiExternalLink, FiBell } from 'react-icons/fi'
 import { useCart } from '../context/CartContext'
 import { useWishlist } from '../context/WishlistContext'
+import { useAuth } from '../context/AuthContext'
 import { useToast } from '../context/ToastContext'
+import LoginModal from './LoginModal'
 
 const ProductModal = ({ product, onClose, isOpen }) => {
   const [selectedImage, setSelectedImage] = useState(0)
@@ -18,9 +20,11 @@ const ProductModal = ({ product, onClose, isOpen }) => {
   const [notifyEmail, setNotifyEmail] = useState('')
   const [showMaterials, setShowMaterials] = useState(false)
   const [showCareInstructions, setShowCareInstructions] = useState(false)
+  const [showLoginModal, setShowLoginModal] = useState(false)
 
   const { addToCart } = useCart()
   const { toggleWishlist, isInWishlist } = useWishlist()
+  const { isAuthenticated } = useAuth()
   const { showToast } = useToast()
 
   const isFavorite = product ? isInWishlist(product.id) : false
@@ -237,12 +241,13 @@ const ProductModal = ({ product, onClose, isOpen }) => {
               </div>
 
               {/* Main Image */}
-              <div className="relative aspect-square bg-gray-50 rounded-xl overflow-hidden mb-4 group">
+              <div className="relative aspect-square bg-gray-50 rounded-xl overflow-hidden mb-4 group touch-pan-x">
                 <img
                   src={productImages[selectedImage]}
                   alt={product.name}
-                  className="w-full h-full object-cover cursor-pointer"
+                  className="w-full h-full object-cover cursor-pointer touch-manipulation"
                   onClick={() => setShowImageViewer(true)}
+                  draggable={false}
                 />
 
                 {/* Zoom Overlay Hint */}
@@ -279,15 +284,15 @@ const ProductModal = ({ product, onClose, isOpen }) => {
               </div>
 
               {/* Thumbnail Images */}
-              <div className="grid grid-cols-4 gap-2">
+              <div className="grid grid-cols-4 gap-2 overflow-x-auto touch-pan-x">
                 {productImages.map((img, index) => (
                   <button
                     key={index}
                     onClick={() => setSelectedImage(index)}
-                    className={`aspect-square rounded-lg overflow-hidden border-2 transition-all ${selectedImage === index ? 'border-gold scale-105' : 'border-gray-200'
+                    className={`aspect-square rounded-lg overflow-hidden border-2 transition-all touch-manipulation ${selectedImage === index ? 'border-gold scale-105' : 'border-gray-200'
                       }`}
                   >
-                    <img src={img} alt={`View ${index + 1}`} className="w-full h-full object-cover" />
+                    <img src={img} alt={`View ${index + 1}`} className="w-full h-full object-cover" draggable={false} />
                   </button>
                 ))}
               </div>
@@ -400,14 +405,6 @@ const ProductModal = ({ product, onClose, isOpen }) => {
               <div className="mb-6 space-y-3">
                 <div className="flex items-center gap-3 text-sm text-gray-700">
                   <span className="w-2 h-2 bg-gold rounded-full"></span>
-                  <span>Premium quality materials</span>
-                </div>
-                <div className="flex items-center gap-3 text-sm text-gray-700">
-                  <span className="w-2 h-2 bg-gold rounded-full"></span>
-                  <span>Handcrafted by master artisans</span>
-                </div>
-                <div className="flex items-center gap-3 text-sm text-gray-700">
-                  <span className="w-2 h-2 bg-gold rounded-full"></span>
                   <span>Certified authentic jewelry</span>
                 </div>
                 <div className="flex items-center gap-3 text-sm text-gray-700">
@@ -451,8 +448,12 @@ const ProductModal = ({ product, onClose, isOpen }) => {
                 ) : (
                   <button
                     onClick={() => {
-                      addToCart(product, quantity)
-                      onClose()
+                      if (!isAuthenticated) {
+                        setShowLoginModal(true)
+                      } else {
+                        addToCart(product, quantity)
+                        onClose()
+                      }
                     }}
                     className="flex-1 bg-black text-white px-6 py-4 rounded-full font-medium hover:bg-gold transition-all duration-300 flex items-center justify-center gap-2 transform hover:scale-105"
                   >
@@ -461,7 +462,13 @@ const ProductModal = ({ product, onClose, isOpen }) => {
                   </button>
                 )}
                 <button
-                  onClick={() => toggleWishlist(product)}
+                  onClick={() => {
+                    if (!isAuthenticated) {
+                      setShowLoginModal(true)
+                    } else {
+                      toggleWishlist(product)
+                    }
+                  }}
                   className={`p-4 border-2 rounded-full transition-colors ${isFavorite
                     ? 'border-red-500 text-red-500 bg-red-50'
                     : 'border-gray-300 hover:border-red-500 hover:text-red-500'
@@ -525,6 +532,14 @@ const ProductModal = ({ product, onClose, isOpen }) => {
             </form>
           </div>
         </div>
+      )}
+
+      {/* Login Modal */}
+      {showLoginModal && (
+        <LoginModal
+          isOpen={showLoginModal}
+          onClose={() => setShowLoginModal(false)}
+        />
       )}
     </>,
     document.body

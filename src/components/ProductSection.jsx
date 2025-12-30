@@ -1,21 +1,33 @@
 import React, { useState, useRef, useEffect } from 'react'
 import ProductCard from './ProductCard'
 
-const ProductSection = ({ title, modelImage, modelPosition, products }) => {
+const ProductSection = ({ title, modelImage, modelImages, modelPosition, products }) => {
   const [isExpanded, setIsExpanded] = useState(false)
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
   const productGridRef = useRef(null)
   const MAX_INITIAL_PRODUCTS = 4
   const hasMoreProducts = products.length > MAX_INITIAL_PRODUCTS
 
-  // Image carousel effect - cycle through 3 images every 5 seconds
+  const resolvedModelImages = Array.isArray(modelImages) && modelImages.length > 0
+    ? modelImages
+    : (modelImage ? [modelImage] : [])
+
+  const modelImagesCount = resolvedModelImages.length
+
   useEffect(() => {
+    setCurrentImageIndex(0)
+  }, [modelImagesCount])
+
+  // Image carousel effect - cycle only when 2 or 3 images exist
+  useEffect(() => {
+    if (modelImagesCount <= 1) return
+
     const timer = setInterval(() => {
-      setCurrentImageIndex((prev) => (prev + 1) % 3)
+      setCurrentImageIndex((prev) => (prev + 1) % modelImagesCount)
     }, 5000)
 
     return () => clearInterval(timer)
-  }, [])
+  }, [modelImagesCount])
 
   // Handle click outside to collapse
   useEffect(() => {
@@ -36,19 +48,7 @@ const ProductSection = ({ title, modelImage, modelPosition, products }) => {
 
   const displayedProducts = isExpanded ? products : products.slice(0, MAX_INITIAL_PRODUCTS)
 
-  // Generate the current image path based on the base modelImage and currentImageIndex
-  const getImagePath = (basePath) => {
-    // Extract the base name without extension (e.g., "/Compoents/PagesImages/ForEarrings.png" -> "ForEarrings")
-    const pathParts = basePath.split('/')
-    const fileName = pathParts[pathParts.length - 1]
-    const baseName = fileName.replace('.png', '')
-    const directory = pathParts.slice(0, -1).join('/')
-
-    // Return the path with the current index (1, 2, or 3)
-    return `${directory}/${baseName}${currentImageIndex + 1}.png`
-  }
-
-  const currentModelImage = getImagePath(modelImage)
+  const currentModelImage = resolvedModelImages[currentImageIndex] || resolvedModelImages[0]
 
   return (
     <section className="py-16 lg:py-24 bg-white">
@@ -62,7 +62,6 @@ const ProductSection = ({ title, modelImage, modelPosition, products }) => {
           {/* Model Image - Always appears first on mobile, positioned based on modelPosition on desktop */}
           <div className={`lg:col-span-5 order-1 ${modelPosition === 'left' ? 'lg:order-1' : 'lg:order-2'} relative overflow-hidden`}>
             <img
-              key={currentImageIndex}
               src={currentModelImage}
               alt={`${title} model showcase`}
               className="w-full h-[300px] sm:h-[400px] md:h-[500px] lg:h-[700px] object-cover object-center transition-opacity duration-700 animate-fade-in rounded-lg"

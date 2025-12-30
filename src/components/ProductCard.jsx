@@ -2,7 +2,9 @@ import React, { useState, useEffect, useRef } from 'react'
 import { FiShoppingBag, FiHeart } from 'react-icons/fi'
 import { useCart } from '../context/CartContext'
 import { useWishlist } from '../context/WishlistContext'
+import { useAuth } from '../context/AuthContext'
 import ProductModal from './ProductModal'
+import LoginModal from './LoginModal'
 
 const ProductCard = ({ product }) => {
   const [isHovered, setIsHovered] = useState(false)
@@ -10,10 +12,13 @@ const ProductCard = ({ product }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
   const [hoveredSnippetIndex, setHoveredSnippetIndex] = useState(null)
   const [showDescription, setShowDescription] = useState(false)
+  const [showLoginModal, setShowLoginModal] = useState(false)
   const intervalRef = useRef(null)
+  const descriptionRef = useRef(null)
 
   const { addToCart } = useCart()
   const { toggleWishlist, isInWishlist } = useWishlist()
+  const { isAuthenticated } = useAuth()
 
   const isFavorite = isInWishlist(product.id)
 
@@ -52,6 +57,24 @@ const ProductCard = ({ product }) => {
     }
   }, [isHovered, hoveredSnippetIndex, productImages.length])
 
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (showDescription && descriptionRef.current && !descriptionRef.current.contains(event.target)) {
+        setShowDescription(false)
+      }
+    }
+
+    if (showDescription) {
+      document.addEventListener('mousedown', handleClickOutside)
+      document.addEventListener('touchstart', handleClickOutside)
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+      document.removeEventListener('touchstart', handleClickOutside)
+    }
+  }, [showDescription])
+
   return (
     <div
       className="bg-white rounded-2xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 group"
@@ -60,34 +83,44 @@ const ProductCard = ({ product }) => {
     >
       {/* Image Container - Clickable to open modal */}
       <div
-        className="relative aspect-square overflow-hidden bg-gray-50 cursor-pointer"
+        className="relative aspect-square overflow-hidden bg-gray-50 cursor-pointer touch-manipulation"
         onClick={() => setShowModal(true)}
       >
         <img
           src={productImages[currentImageIndex]}
           alt={product.name}
-          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110 touch-manipulation"
           loading="lazy"
+          draggable={false}
         />
 
         {/* Badges */}
-        <div className="absolute top-2 left-2 sm:top-4 sm:left-4 z-10 flex flex-col gap-2">
-          {discount > 0 && (
-            <div className="bg-red-500 text-white px-2 py-0.5 sm:px-3 sm:py-1 rounded-full text-xs sm:text-sm font-semibold">
-              -{discount}%
+        {discount > 0 && (
+          <div className="absolute -top-3 right-2 sm:right-4 z-10">
+            <div className="bg-red-500 text-white px-3 py-1 sm:px-4 sm:py-1.5 rounded-full text-xs sm:text-sm font-bold shadow-lg">
+              -{discount}% OFF
             </div>
-          )}
-          {isOutOfStock && (
+          </div>
+        )}
+        {isOutOfStock && (
+          <div className="absolute top-2 left-2 sm:top-4 sm:left-4 z-10">
             <div className="bg-gray-800 text-white px-2 py-0.5 sm:px-3 sm:py-1 rounded-full text-xs sm:text-sm font-semibold">
               Out of Stock
             </div>
-          )}
-        </div>
+          </div>
+        )}
 
         {/* Quick Action Buttons */}
         <div className={`absolute top-2 right-2 sm:top-4 sm:right-4 flex flex-col gap-1.5 sm:gap-2 transition-all duration-300 z-10 ${isHovered ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-4'}`}>
           <button
-            onClick={(e) => { e.stopPropagation(); toggleWishlist(product); }}
+            onClick={(e) => {
+              e.stopPropagation();
+              if (!isAuthenticated) {
+                setShowLoginModal(true);
+              } else {
+                toggleWishlist(product);
+              }
+            }}
             className={`p-1.5 sm:p-2 rounded-full backdrop-blur-sm transition-colors ${isFavorite ? 'bg-red-500 text-white' : 'bg-white/90 text-gray-800 hover:bg-red-500 hover:text-white'
               }`}
             aria-label="Add to wishlist"
@@ -95,7 +128,14 @@ const ProductCard = ({ product }) => {
             <FiHeart className="w-4 h-4 sm:w-[18px] sm:h-[18px]" fill={isFavorite ? 'currentColor' : 'none'} />
           </button>
           <button
-            onClick={(e) => { e.stopPropagation(); if (!isOutOfStock) addToCart(product, 1); }}
+            onClick={(e) => {
+              e.stopPropagation();
+              if (!isAuthenticated) {
+                setShowLoginModal(true);
+              } else if (!isOutOfStock) {
+                addToCart(product, 1);
+              }
+            }}
             disabled={isOutOfStock}
             className={`p-1.5 sm:p-2 backdrop-blur-sm rounded-full transition-colors ${isOutOfStock
               ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
@@ -153,7 +193,7 @@ const ProductCard = ({ product }) => {
 
         {/* Description Toggle Button */}
         {product.description && (
-          <div className="mt-3">
+          <div className="mt-3" ref={descriptionRef}>
             <button
               onClick={(e) => {
                 e.stopPropagation()
@@ -182,6 +222,12 @@ const ProductCard = ({ product }) => {
         product={product}
         isOpen={showModal}
         onClose={() => setShowModal(false)}
+      />
+
+      {/* Login Modal */}
+      <LoginModal
+        isOpen={showLoginModal}
+        onClose={() => setShowLoginModal(false)}
       />
     </div>
   )

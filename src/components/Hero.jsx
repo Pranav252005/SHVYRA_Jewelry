@@ -17,9 +17,9 @@ const Hero = () => {
   }, [slides.length])
 
   return (
-    <section className="relative mt-36 overflow-hidden">
+    <section className="relative pt-32 overflow-hidden">
       {/* Slider Container */}
-      <div className="relative w-full h-[70vh] sm:h-[80vh] lg:h-[90vh]">
+      <div className="relative w-full h-[55vh] sm:h-[80vh] lg:h-[90vh]">
         {/* Slides */}
         {slides.map((slide, index) => (
           <div
@@ -46,12 +46,12 @@ const Hero = () => {
         </div>
 
         {/* Slider Dots */}
-        <div className="absolute bottom-24 left-1/2 transform -translate-x-1/2 z-10 flex gap-2">
+        <div className="absolute bottom-24 left-1/2 transform -translate-x-1/2 z-10 flex gap-1.5 sm:gap-2">
           {slides.map((_, index) => (
             <button
               key={index}
               onClick={() => setCurrentSlide(index)}
-              className={`h-2 rounded-full transition-all duration-300 ${index === currentSlide ? 'w-8 bg-white' : 'w-2 bg-white/50'
+              className={`h-1.5 sm:h-2 rounded-full transition-all duration-300 ${index === currentSlide ? 'w-6 sm:w-8 bg-white' : 'w-1.5 sm:w-2 bg-white/50'
                 }`}
               aria-label={`Go to slide ${index + 1}`}
             />
