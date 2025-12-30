@@ -96,9 +96,9 @@ const ProductCard = ({ product }) => {
 
         {/* Badges */}
         {discount > 0 && (
-          <div className="absolute -top-3 right-2 sm:right-4 z-10">
-            <div className="bg-red-500 text-white px-3 py-1 sm:px-4 sm:py-1.5 rounded-full text-xs sm:text-sm font-bold shadow-lg">
-              -{discount}% OFF
+          <div className="absolute -top-4 right-2 sm:-top-5 sm:right-4 z-20">
+            <div className="bg-red-500 text-white px-4 py-1.5 sm:px-5 sm:py-2 rounded-full text-sm sm:text-base font-bold shadow-xl animate-bounce">
+              30% OFF
             </div>
           </div>
         )}

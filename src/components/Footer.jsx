@@ -7,11 +7,11 @@ const Footer = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
           {/* Brand Section */}
-          <div className="lg:col-span-1">
+          <div className="lg:col-span-1 flex flex-col items-center lg:items-start">
             <img
               src="/Compoents/Logo/Shvyra.png"
               alt="SHVYRA Logo"
-              className="h-36 w-auto mb-[-45px] brightness-0 invert"
+              className="h-36 w-auto mb-[-45px] brightness-0 invert mx-auto lg:mx-0"
             />
             <p className="text-gray-400 text-sm leading-relaxed mb-4">
               SHVYRA brings you timeless elegance through our exquisite collection of handcrafted jewelry. Each piece is a celebration of artistry and tradition.

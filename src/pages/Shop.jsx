@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react'
+import React, { useState, useMemo, useEffect } from 'react'
 import { FiFilter, FiX, FiChevronDown, FiGrid, FiList } from 'react-icons/fi'
 import ProductCard from '../components/ProductCard'
 import { getAllProducts } from '../data/products'
@@ -11,6 +11,19 @@ const Shop = () => {
   const [showFilters, setShowFilters] = useState(false)
 
   const allProducts = getAllProducts()
+
+  // Handle URL parameters for category filtering
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search)
+    const category = params.get('category')
+    if (category) {
+      // Capitalize first letter to match category names
+      const formattedCategory = category.charAt(0).toUpperCase() + category.slice(1)
+      if (categories.includes(formattedCategory) && !selectedCategories.includes(formattedCategory)) {
+        setSelectedCategories([formattedCategory])
+      }
+    }
+  }, [])
 
   // Filter and sort products
   const filteredAndSortedProducts = useMemo(() => {
@@ -71,7 +84,6 @@ const Shop = () => {
     setSortBy('featured')
   }
 
-  const categories = ['Earrings', 'Necklaces', 'Bangles']
   const priceRanges = [
     { label: 'Under ₹500', min: 0, max: 500 },
     { label: '₹500 - ₹750', min: 500, max: 750 },
