@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { AuthProvider } from './context/AuthContext'
 import { CartProvider } from './context/CartContext'
 import { WishlistProvider } from './context/WishlistContext'
@@ -12,78 +13,28 @@ import NewArrivals from './pages/NewArrivals'
 import Checkout from './pages/Checkout'
 
 function App() {
-  const [currentPage, setCurrentPage] = useState('home')
-
-  useEffect(() => {
-    // Handle navigation
-    const handleNavigation = (e) => {
-      const target = e.target.closest('a')
-      if (target && target.getAttribute('href')) {
-        const href = target.getAttribute('href')
-
-        // Handle page navigation
-        if (href === '/' || href === '#home') {
-          e.preventDefault()
-          setCurrentPage('home')
-          window.scrollTo({ top: 0, behavior: 'smooth' })
-        } else if (href === '/about') {
-          e.preventDefault()
-          setCurrentPage('about')
-          window.scrollTo({ top: 0, behavior: 'smooth' })
-        } else if (href === '/story') {
-          e.preventDefault()
-          setCurrentPage('story')
-          window.scrollTo({ top: 0, behavior: 'smooth' })
-        } else if (href === '/shop' || href.startsWith('/shop?')) {
-          e.preventDefault()
-          setCurrentPage('shop')
-          window.scrollTo({ top: 0, behavior: 'smooth' })
-        } else if (href === '/new-arrivals') {
-          e.preventDefault()
-          setCurrentPage('new-arrivals')
-          window.scrollTo({ top: 0, behavior: 'smooth' })
-        } else if (href === '/checkout') {
-          e.preventDefault()
-          setCurrentPage('checkout')
-          window.scrollTo({ top: 0, behavior: 'smooth' })
-        }
-        // Hash links will work naturally for same-page navigation
-      }
-    }
-
-    document.addEventListener('click', handleNavigation)
-    return () => document.removeEventListener('click', handleNavigation)
-  }, [])
-
-  const renderPage = () => {
-    switch (currentPage) {
-      case 'about':
-        return <AboutUs />
-      case 'story':
-        return <OurStory />
-      case 'shop':
-        return <Shop />
-      case 'new-arrivals':
-        return <NewArrivals />
-      case 'checkout':
-        return <Checkout />
-      default:
-        return <Home />
-    }
-  }
 
   return (
-    <AuthProvider>
-      <CartProvider>
-        <WishlistProvider>
-          <ToastProvider>
-            <Layout>
-              {renderPage()}
-            </Layout>
-          </ToastProvider>
-        </WishlistProvider>
-      </CartProvider>
-    </AuthProvider>
+    <BrowserRouter>
+      <AuthProvider>
+        <CartProvider>
+          <WishlistProvider>
+            <ToastProvider>
+              <Layout>
+                <Routes>
+                  <Route path="/" element={<Home />} />
+                  <Route path="/about" element={<AboutUs />} />
+                  <Route path="/story" element={<OurStory />} />
+                  <Route path="/shop" element={<Shop />} />
+                  <Route path="/new-arrivals" element={<NewArrivals />} />
+                  <Route path="/checkout" element={<Checkout />} />
+                </Routes>
+              </Layout>
+            </ToastProvider>
+          </WishlistProvider>
+        </CartProvider>
+      </AuthProvider>
+    </BrowserRouter>
   )
 }
 

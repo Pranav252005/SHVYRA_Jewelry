@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { useNavigate, Link } from 'react-router-dom'
 import { useCart } from '../context/CartContext'
 import { getAllProducts } from '../data/products'
 import ProductCard from '../components/ProductCard'
@@ -7,6 +8,7 @@ import useRazorpay from '../hooks/useRazorpay'
 import { FiShoppingBag, FiTag, FiTruck, FiUser, FiMail, FiPhone, FiMapPin, FiCreditCard, FiLoader, FiAlertCircle } from 'react-icons/fi'
 
 const Checkout = () => {
+  const navigate = useNavigate()
   const { cartItems, getCartTotal, removeFromCart, updateQuantity, clearCart } = useCart()
   const { initiatePayment, loading: paymentLoading, error: paymentError, isReady } = useRazorpay()
 
@@ -162,10 +164,7 @@ const Checkout = () => {
 
   const handleContinueShopping = () => {
     setOrderSuccess(null)
-    // Navigate to shop page using anchor tag click
-    const shopLink = document.createElement('a')
-    shopLink.href = '/shop'
-    shopLink.click()
+    navigate('/shop')
   }
 
   // Show success page if order was completed
@@ -186,12 +185,12 @@ const Checkout = () => {
             <div className="text-6xl mb-4">🛒</div>
             <h2 className="text-3xl font-bold text-gray-900 mb-4 font-serif">Your Cart is Empty</h2>
             <p className="text-gray-600 mb-8">Add some beautiful jewelry to get started!</p>
-            <a
-              href="/shop"
+            <Link
+              to="/shop"
               className="inline-block bg-gradient-to-r from-[#E6B445] to-[#C49A63] text-white px-8 py-3 rounded-full font-medium uppercase tracking-wider hover:shadow-lg transition-all duration-300 transform hover:scale-105"
             >
               Continue Shopping
-            </a>
+            </Link>
           </div>
         </div>
       </div>

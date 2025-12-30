@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { FiSearch, FiUser, FiHeart, FiShoppingBag, FiX, FiMenu, FiChevronDown, FiLogOut } from 'react-icons/fi'
+import { Link } from 'react-router-dom'
 import { useCart } from '../context/CartContext'
 import { useWishlist } from '../context/WishlistContext'
 import { useAuth } from '../context/AuthContext'
@@ -138,13 +139,13 @@ const Header = () => {
 
             {/* Logo - Center on mobile, left on desktop */}
             <div className="absolute left-1/2 -translate-x-1/2 lg:static lg:left-auto lg:translate-x-0 flex justify-center lg:justify-start">
-              <a href="/" className="cursor-pointer flex items-center justify-center">
+              <Link to="/" className="cursor-pointer flex items-center justify-center">
                 <img
                   src="/Compoents/Logo/Shvyra.png"
                   alt="SHVYRA Logo"
                   className="h-36 w-auto mt-5 object-contain"
                 />
-              </a>
+              </Link>
             </div>
 
             {/* Right Icons */}
@@ -239,9 +240,9 @@ const Header = () => {
 
           {/* Desktop Navigation */}
           <nav className="hidden lg:flex items-center justify-center gap-8 py-4 border-t border-gray-100">
-            <a href="/" className="text-sm font-medium hover:text-gold transition-colors uppercase tracking-wide">
+            <Link to="/" className="text-sm font-medium hover:text-gold transition-colors uppercase tracking-wide">
               Home
-            </a>
+            </Link>
 
             {/* Shop by Product Dropdown */}
             <div
@@ -249,28 +250,28 @@ const Header = () => {
               onMouseEnter={handleShopEnter}
               onMouseLeave={handleShopLeave}
             >
-              <a href="/shop" className="text-sm font-medium hover:text-gold transition-colors uppercase tracking-wide flex items-center gap-1">
+              <Link to="/shop" className="text-sm font-medium hover:text-gold transition-colors uppercase tracking-wide flex items-center gap-1">
                 Shop by Product
                 <FiChevronDown size={14} className={`transition-transform duration-200 ${shopDropdownOpen ? 'rotate-180' : ''}`} />
-              </a>
+              </Link>
               {shopDropdownOpen && (
                 <div
                   className="absolute top-full left-0 mt-2 w-48 bg-white shadow-xl rounded-lg overflow-hidden border border-gray-100 animate-fade-in"
                   onMouseEnter={handleShopEnter}
                   onMouseLeave={handleShopLeave}
                 >
-                  <a href="/shop?category=earrings" className="block px-4 py-3 text-sm text-gray-700 hover:bg-gradient-to-r hover:from-[#E6B445] hover:to-[#C49A63] hover:text-white transition-all">
+                  <Link to="/shop?category=earrings" className="block px-4 py-3 text-sm text-gray-700 hover:bg-gradient-to-r hover:from-[#E6B445] hover:to-[#C49A63] hover:text-white transition-all">
                     Earrings
-                  </a>
-                  <a href="/shop?category=necklaces" className="block px-4 py-3 text-sm text-gray-700 hover:bg-gradient-to-r hover:from-[#E6B445] hover:to-[#C49A63] hover:text-white transition-all">
+                  </Link>
+                  <Link to="/shop?category=necklaces" className="block px-4 py-3 text-sm text-gray-700 hover:bg-gradient-to-r hover:from-[#E6B445] hover:to-[#C49A63] hover:text-white transition-all">
                     Necklaces
-                  </a>
-                  <a href="/shop?category=bangles" className="block px-4 py-3 text-sm text-gray-700 hover:bg-gradient-to-r hover:from-[#E6B445] hover:to-[#C49A63] hover:text-white transition-all">
+                  </Link>
+                  <Link to="/shop?category=bangles" className="block px-4 py-3 text-sm text-gray-700 hover:bg-gradient-to-r hover:from-[#E6B445] hover:to-[#C49A63] hover:text-white transition-all">
                     Bangles
-                  </a>
-                  <a href="/shop" className="block px-4 py-3 text-sm font-semibold text-gray-900 hover:bg-gradient-to-r hover:from-[#E6B445] hover:to-[#C49A63] hover:text-white transition-all border-t border-gray-100">
+                  </Link>
+                  <Link to="/shop" className="block px-4 py-3 text-sm font-semibold text-gray-900 hover:bg-gradient-to-r hover:from-[#E6B445] hover:to-[#C49A63] hover:text-white transition-all border-t border-gray-100">
                     View All Products
-                  </a>
+                  </Link>
                 </div>
               )}
             </div>
@@ -281,19 +282,19 @@ const Header = () => {
               onMouseEnter={handleArrivalsEnter}
               onMouseLeave={handleArrivalsLeave}
             >
-              <a href="/new-arrivals" className="text-sm font-medium hover:text-gold transition-colors uppercase tracking-wide flex items-center gap-1">
+              <Link to="/new-arrivals" className="text-sm font-medium hover:text-gold transition-colors uppercase tracking-wide flex items-center gap-1">
                 New Arrivals
                 <FiChevronDown size={14} className={`transition-transform duration-200 ${arrivalsDropdownOpen ? 'rotate-180' : ''}`} />
-              </a>
+              </Link>
               {arrivalsDropdownOpen && (
                 <div
                   className="absolute top-full left-0 mt-2 w-48 bg-white shadow-xl rounded-lg overflow-hidden border border-gray-100 animate-fade-in"
                   onMouseEnter={handleArrivalsEnter}
                   onMouseLeave={handleArrivalsLeave}
                 >
-                  <a href="/new-arrivals" className="block px-4 py-3 text-sm font-semibold text-gray-900 hover:bg-gradient-to-r hover:from-[#E6B445] hover:to-[#C49A63] hover:text-white transition-all">
+                  <Link to="/new-arrivals" className="block px-4 py-3 text-sm font-semibold text-gray-900 hover:bg-gradient-to-r hover:from-[#E6B445] hover:to-[#C49A63] hover:text-white transition-all">
                     View All New Arrivals
-                  </a>
+                  </Link>
                 </div>
               )}
             </div>
@@ -301,9 +302,9 @@ const Header = () => {
             <a href="#sale" className="text-sm font-medium hover:text-gold transition-colors uppercase tracking-wide text-red-600">
               Sale
             </a>
-            <a href="/about" className="text-sm font-medium hover:text-gold transition-colors uppercase tracking-wide">
+            <Link to="/about" className="text-sm font-medium hover:text-gold transition-colors uppercase tracking-wide">
               About Us
-            </a>
+            </Link>
           </nav>
         </div>
       </div>
@@ -312,34 +313,34 @@ const Header = () => {
       {mobileMenuOpen && (
         <div ref={mobileMenuRef} className="lg:hidden bg-white border-b border-gray-200 shadow-lg">
           <nav className="flex flex-col px-4 py-4 gap-4">
-            <a href="/" onClick={() => setMobileMenuOpen(false)} className="text-sm font-medium hover:text-gold transition-colors uppercase tracking-wide py-2">
+            <Link to="/" onClick={() => setMobileMenuOpen(false)} className="text-sm font-medium hover:text-gold transition-colors uppercase tracking-wide py-2">
               Home
-            </a>
+            </Link>
             <div className="flex flex-col">
-              <a href="/shop" onClick={() => setMobileMenuOpen(false)} className="text-sm font-medium hover:text-gold transition-colors uppercase tracking-wide py-2">
+              <Link to="/shop" onClick={() => setMobileMenuOpen(false)} className="text-sm font-medium hover:text-gold transition-colors uppercase tracking-wide py-2">
                 Shop by Product
-              </a>
+              </Link>
               <div className="pl-4 flex flex-col gap-2 mt-2">
-                <a href="/shop?category=earrings" onClick={() => setMobileMenuOpen(false)} className="text-xs text-gray-600 hover:text-gold transition-colors py-1">
+                <Link to="/shop?category=earrings" onClick={() => setMobileMenuOpen(false)} className="text-xs text-gray-600 hover:text-gold transition-colors py-1">
                   → Earrings
-                </a>
-                <a href="/shop?category=necklaces" onClick={() => setMobileMenuOpen(false)} className="text-xs text-gray-600 hover:text-gold transition-colors py-1">
+                </Link>
+                <Link to="/shop?category=necklaces" onClick={() => setMobileMenuOpen(false)} className="text-xs text-gray-600 hover:text-gold transition-colors py-1">
                   → Necklaces
-                </a>
-                <a href="/shop?category=bangles" onClick={() => setMobileMenuOpen(false)} className="text-xs text-gray-600 hover:text-gold transition-colors py-1">
+                </Link>
+                <Link to="/shop?category=bangles" onClick={() => setMobileMenuOpen(false)} className="text-xs text-gray-600 hover:text-gold transition-colors py-1">
                   → Bangles
-                </a>
+                </Link>
               </div>
             </div>
-            <a href="/new-arrivals" onClick={() => setMobileMenuOpen(false)} className="text-sm font-medium hover:text-gold transition-colors uppercase tracking-wide py-2">
+            <Link to="/new-arrivals" onClick={() => setMobileMenuOpen(false)} className="text-sm font-medium hover:text-gold transition-colors uppercase tracking-wide py-2">
               New Arrivals
-            </a>
+            </Link>
             <a href="#sale" onClick={() => setMobileMenuOpen(false)} className="text-sm font-medium hover:text-gold transition-colors uppercase tracking-wide text-red-600 py-2">
               Sale
             </a>
-            <a href="/about" onClick={() => setMobileMenuOpen(false)} className="text-sm font-medium hover:text-gold transition-colors uppercase tracking-wide py-2">
+            <Link to="/about" onClick={() => setMobileMenuOpen(false)} className="text-sm font-medium hover:text-gold transition-colors uppercase tracking-wide py-2">
               About Us
-            </a>
+            </Link>
           </nav>
         </div>
       )}

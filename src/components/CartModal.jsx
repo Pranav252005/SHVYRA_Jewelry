@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo } from 'react'
 import { createPortal } from 'react-dom'
+import { Link } from 'react-router-dom'
 import { FiX, FiTrash2, FiShoppingBag } from 'react-icons/fi'
 import { useCart } from '../context/CartContext'
 import { getAllProducts } from '../data/products'
@@ -125,13 +126,13 @@ const CartModal = ({ isOpen, onClose }) => {
               Shipping and taxes calculated at checkout
             </div>
             <div className="flex gap-3">
-              <a
-                href="/checkout"
+              <Link
+                to="/checkout"
                 onClick={handleCheckout}
                 className="flex-1 bg-black text-white px-6 py-4 rounded-full font-medium hover:bg-gold transition-all duration-300 transform hover:scale-105 text-center"
               >
                 Proceed to Checkout
-              </a>
+              </Link>
               <button
                 onClick={clearCart}
                 className="px-6 py-4 border-2 border-gray-300 rounded-full font-medium hover:border-red-500 hover:text-red-500 transition-colors"

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
 
 const Hero = () => {
   const [currentSlide, setCurrentSlide] = useState(0)
@@ -37,12 +38,12 @@ const Hero = () => {
 
         {/* Shop Now Button - Positioned at bottom center */}
         <div className="absolute bottom-12 left-1/2 transform -translate-x-1/2 z-10">
-          <a
-            href="/shop"
+          <Link
+            to="/shop"
             className="inline-block bg-white text-black px-8 py-3 rounded-full font-medium uppercase tracking-wider hover:bg-black hover:text-white transition-all duration-300 transform hover:scale-105 shadow-lg"
           >
             Shop Now
-          </a>
+          </Link>
         </div>
 
         {/* Slider Dots */}
