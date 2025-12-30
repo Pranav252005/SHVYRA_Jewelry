@@ -17,9 +17,9 @@ const Hero = () => {
   }, [slides.length])
 
   return (
-    <section className="relative pt-32 overflow-hidden">
+    <section className="relative pt-28 sm:pt-32 overflow-hidden">
       {/* Slider Container */}
-      <div className="relative w-full h-[55vh] sm:h-[80vh] lg:h-[90vh]">
+      <div className="relative w-full h-[50vh] sm:h-[70vh] lg:h-[85vh] max-w-full">
         {/* Slides */}
         {slides.map((slide, index) => (
           <div
@@ -30,7 +30,7 @@ const Hero = () => {
             <img
               src={slide.image}
               alt={slide.alt}
-              className="w-full h-full object-cover object-center"
+              className="w-full h-full object-contain sm:object-cover object-center"
             />
           </div>
         ))}

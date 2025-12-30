@@ -213,7 +213,7 @@ const Header = () => {
               {isAuthenticated && (
                 <button
                   onClick={() => setWishlistModalOpen(true)}
-                  className="p-2 hover:bg-gray-100 rounded-full transition-all relative"
+                  className="block p-2 hover:bg-gray-100 rounded-full transition-all relative"
                   aria-label="Wishlist"
                 >
                   <FiHeart size={20} />
